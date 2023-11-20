@@ -118,6 +118,8 @@ exec redis-server & bashio::log.info "Starting redis"
 exec nginx & bashio::log.info "Starting nginx"
 
 ###############
-# Staring app #
+# Starting app #
 ###############
 bashio::log.info "Initial username and password are admin. Please change in the administration panel of the webUI after login."
+
+/./usr/local/bin/paperless_cmd.sh /sbin/docker-entrypoint.sh 
