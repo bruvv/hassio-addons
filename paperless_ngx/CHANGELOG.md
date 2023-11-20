@@ -1,3 +1,5 @@
+WORK IN PROGRESS DON'T UPDATE (no data loss)
+
 - Correct passing of addon options to addon
 - Automatically changes config.yaml addon option to new location
 
