@@ -52,9 +52,15 @@ fi
 
 # Migrate if needed
 if [ "$CONFIGLOCATION" == "/config" ]; then
+    # Migrate file
     if [ -f "/homeassistant/addons_config/${slug}/config.yaml" ]; then
         echo "Migrating config.yaml to new config location"
         mv /homeassistant/addons_config/"${slug}"/config.yaml /config/config.yaml
+    fi
+    # Migrate option
+    if [[ "$(bashio::config "CONFIG_LOCATION")" == "/config/addons_config"* ]] && [ -f /config/config.yaml ]; then
+        bashio::addon.option "CONFIG_LOCATION" "/config/config.yaml"
+        CONFIGSOURCE="$(bashio::config "CONFIG_LOCATION")"
     fi
 fi
 
@@ -139,13 +145,13 @@ while IFS= read -r line; do
     # Check if secret
     if [[ "${line}" == *'!secret '* ]]; then
         echo "secret detected"
-        secret=${line#*secret }
+        secret="${line#*secret }"
         # Check if single match
-        secretnum=$(sed -n "/$secret:/=" /config/secrets.yaml)
+        secretnum="$(sed -n "/$secret:/=" /config/secrets.yaml)"
         [[ $(echo $secretnum) == *' '* ]] && bashio::exit.nok "There are multiple matches for your password name. Please check your secrets.yaml file"
         # Get text
-        secret=$(sed -n "/$secret:/p" /config/secrets.yaml)
-        secret=${secret#*: }
+        secret="$(sed -n "/$secret:/p" /config/secrets.yaml)"
+        secret="${secret#*: }"
         line="${line%%=*}='$secret'"
     fi
     # Data validation
