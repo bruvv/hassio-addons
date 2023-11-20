@@ -1,11 +1,8 @@
-### 2.0.0b1-4 (20-11-2023)
-- Minor bugs fixed
 WORK IN PROGRESS DON'T UPDATE (no data loss)
 
+### 2.0.0b1-4 (20-11-2023)
 - Correct passing of addon options to addon
 - Automatically changes config.yaml addon option to new location
-
-### 2.0.0b1-3 (19-11-2023)
 - Restore local and smb disks scripts
 
 ## 2.0.0b1 (19-11-2023)
