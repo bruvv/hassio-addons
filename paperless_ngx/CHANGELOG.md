@@ -1,5 +1,7 @@
+- Correct passing of addon options to addon
+- Automatically changes config.yaml addon option to new location
+
 ### 2.0.0b1-3 (19-11-2023)
-- Minor bugs fixed
 - Restore local and smb disks scripts
 
 ## 2.0.0b1 (19-11-2023)
