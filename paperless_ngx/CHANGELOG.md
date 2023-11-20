@@ -1,3 +1,5 @@
+### 2.0.0b1-4 (20-11-2023)
+- Minor bugs fixed
 WORK IN PROGRESS DON'T UPDATE (no data loss)
 
 - Correct passing of addon options to addon
