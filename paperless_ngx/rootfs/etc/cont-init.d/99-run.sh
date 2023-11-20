@@ -88,10 +88,11 @@ for variable in PAPERLESS_DATA_DIR PAPERLESS_MEDIA_ROOT PAPERLESS_CONSUMPTION_DI
 
     # Variable content
     variablecontent="$(eval echo "\$$variable")"
-
     # Skip if variable content empty
     if [ ${#variablecontent} -le 2 ]; then
         continue
+    else
+        bashio::log.blue "$variable=\"$variablecontent\""
     fi
 
     # Export
@@ -121,5 +122,3 @@ exec nginx & bashio::log.info "Starting nginx"
 # Starting app #
 ###############
 bashio::log.info "Initial username and password are admin. Please change in the administration panel of the webUI after login."
-
-/./usr/local/bin/paperless_cmd.sh /sbin/docker-entrypoint.sh 
