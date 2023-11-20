@@ -20,7 +20,7 @@ if bashio::config.has_value "PAPERLESS_OCR_MODE"; then export PAPERLESS_OCR_MODE
 
 export PAPERLESS_ADMIN_PASSWORD="admin"
 export PAPERLESS_ADMIN_USER="admin"
-export PAPERLESS_ALLOWED_HOSTS="*"
+export PAPERLESS_ALLOWED_HOSTS="\"*\""
 
 chown -R paperless:paperless /config
 
