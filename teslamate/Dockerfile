@@ -3,10 +3,24 @@
 #============================#
 #=== Home Assistant Addon ===#
 
+##################
+# 1 Build Images #
+##################
+
 # Build arguments
 ARG BUILD_FROM
 ARG BUILD_VERSION
 ARG TESLAMATE_VERSION=${BUILD_VERSION}
+
+# Multi-stage builds
+FROM postgres:13-alpine AS postgres
+FROM grafana/grafana:latest AS grafana
+FROM eclipse-mosquitto:2 AS mosquitto
+FROM ghcr.io/teslamate-org/teslamate:v${TESLAMATE_VERSION} AS teslamate
+
+##################
+# 2 Final Image  #
+##################
 
 # Build final image
 FROM ${BUILD_FROM}
@@ -14,31 +28,19 @@ FROM ${BUILD_FROM}
 # Set shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-# Use official images for each component
-FROM teslamate/teslamate:v${TESLAMATE_VERSION} AS teslamate
-FROM grafana/grafana:latest AS grafana
-FROM eclipse-mosquitto:2 AS mosquitto
-FROM postgres:13-alpine AS postgres
-
-# Copy files from each component
-COPY --from=teslamate /opt/teslamate /opt/teslamate
+# Copy files from other containers
+COPY --from=teslamate /opt/app /opt/teslamate
 COPY --from=grafana /usr/share/grafana /usr/share/grafana
 COPY --from=mosquitto /usr/sbin/mosquitto /usr/sbin/mosquitto
 COPY --from=postgres /usr/local/bin/postgres /usr/local/bin/postgres
 
 # Create data directories
-RUN \
-    mkdir -p /data/postgres /data/grafana /data/mosquitto \
-    && mkdir -p /var/lib/teslamate \
-    && addgroup --system teslamate \
-    && adduser --system --home /var/lib/teslamate --disabled-login --ingroup teslamate teslamate \
-    && chown -R teslamate:teslamate /opt/teslamate \
-    && chown -R teslamate:teslamate /var/lib/teslamate \
-    && chown -R teslamate:teslamate /data/postgres \
-    && chown -R teslamate:teslamate /data/grafana \
-    && chown -R teslamate:teslamate /data/mosquitto
+RUN mkdir -p \
+    /data/postgres \
+    /data/grafana \
+    /data/mosquitto
 
-# Set up volumes for persistence
+# Set volumes
 VOLUME ["/data/postgres", "/data/grafana", "/data/mosquitto"]
 
 # S6 overlay environment
