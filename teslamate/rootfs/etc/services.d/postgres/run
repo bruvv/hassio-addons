@@ -1,0 +1,2 @@
+#!/usr/bin/with-contenv bash
+exec /usr/lib/postgresql/$(psql --version | awk '{print $3}' | cut -d. -f1,2)/bin/postgres -D /var/lib/postgresql/data
