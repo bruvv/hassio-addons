@@ -16,7 +16,7 @@ ARG TESLAMATE_VERSION=${BUILD_VERSION}
 FROM postgres:13-alpine AS postgres
 FROM grafana/grafana:latest AS grafana
 FROM eclipse-mosquitto:2 AS mosquitto
-FROM teslamate/teslamate:${TESLAMATE_VERSION} AS teslamate
+FROM ghcr.io/teslamate-org/teslamate:v${TESLAMATE_VERSION} AS teslamate
 
 ##################
 # 2 Final Image  #
@@ -34,11 +34,16 @@ COPY --from=grafana /usr/share/grafana /usr/share/grafana
 COPY --from=mosquitto /usr/sbin/mosquitto /usr/sbin/mosquitto
 COPY --from=postgres /usr/local/bin/postgres /usr/local/bin/postgres
 
-# Create data directories
+# Switch to root user for directory creation
+USER root
+
+# Create data directories with proper permissions
 RUN mkdir -p \
     /data/postgres \
     /data/grafana \
-    /data/mosquitto
+    /data/mosquitto && \
+    chown -R root:root /data && \
+    chmod -R 755 /data
 
 # Set volumes
 VOLUME ["/data/postgres", "/data/grafana", "/data/mosquitto"]
