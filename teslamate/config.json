@@ -1,7 +1,7 @@
 {
-	"arch": ["aarch64", "amd64", "armv7"],
+	"arch": ["aarch64", "amd64"],
 	"codenotary": "bruvv",
-	"description": "A powerful data logger for Tesla vehicles with bundled PostgreSQL, Grafana, and Mosquitto services",
+	"description": "A powerful data logger for Tesla vehicles",
 	"devices": [
 		"/dev/dri",
 		"/dev/dri/card0",
@@ -74,18 +74,12 @@
 		"MQTT_HOST": "{{options.mqtt_host}}",
 		"MQTT_USERNAME": "{{options.mqtt_user}}",
 		"MQTT_PASSWORD": "{{options.mqtt_password}}",
-		"TZ": "{{options.TZ}}",
-		"GRAFANA_ADMIN_USER": "{{options.grafana_admin_user}}",
-		"GRAFANA_ADMIN_PASSWORD": "{{options.grafana_admin_password}}",
-		"POSTGRES_USER": "{{options.database_user}}",
-		"POSTGRES_PASSWORD": "{{options.database_pass}}",
-		"POSTGRES_DB": "{{options.database_name}}"
+		"TZ": "{{options.TZ}}"
 	},
 	"image": "ghcr.io/teslamate-org/teslamate-{arch}",
 	"ingress": true,
 	"ingress_stream": true,
-	"init": false,
-	"map": ["config:rw", "ssl", "data:rw"],
+	"map": ["config:rw"],
 	"name": "TeslaMate",
 	"options": {
 		"TZ": "Europe/Amsterdam",
@@ -96,9 +90,7 @@
 		"mqtt_host": "localhost",
 		"mqtt_user": "",
 		"mqtt_password": "",
-		"encryption_key": "",
-		"grafana_admin_user": "admin",
-		"grafana_admin_password": "admin"
+		"encryption_key": ""
 	},
 	"panel_admin": false,
 	"panel_icon": "mdi:car-connected",
@@ -123,9 +115,7 @@
 		"mqtt_host": "str",
 		"mqtt_user": "str?",
 		"mqtt_password": "password?",
-		"encryption_key": "password",
-		"grafana_admin_user": "str",
-		"grafana_admin_password": "password"
+		"encryption_key": "password"
 	},
 	"slug": "teslamate",
 	"udev": true,
