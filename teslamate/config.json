@@ -1,0 +1,60 @@
+{
+	"name": "TeslaMate",
+	"version": "1.0.0",
+	"slug": "teslamate",
+	"description": "A powerful data logger for Tesla vehicles with bundled PostgreSQL, Grafana, and Mosquitto services.",
+	"url": "https://github.com/bruvv/hassio-addons/tree/main/teslamate",
+	"arch": ["aarch64", "amd64", "armv7"],
+	"startup": "services",
+	"boot": "auto",
+	"map": ["ssl", "config:rw", "data:rw"],
+	"ports": {
+		"4000/tcp": 4000,
+		"3000/tcp": 3000,
+		"5432/tcp": 5432,
+		"1883/tcp": 1883
+	},
+	"ports_description": {
+		"4000/tcp": "TeslaMate web interface",
+		"3000/tcp": "Grafana dashboard",
+		"5432/tcp": "PostgreSQL database",
+		"1883/tcp": "Mosquitto MQTT broker"
+	},
+	"hassio_api": true,
+	"hassio_role": "default",
+	"webui": "http://[HOST]:[PORT:4000]",
+	"ingress": true,
+	"ingress_port": 4000,
+	"panel_icon": "mdi:car-connected",
+	"panel_title": "TeslaMate",
+	"host_network": false,
+	"image": "ghcr.io/teslamate-org/teslamate:1.27.1",
+	"options": {
+		"database_user": "teslamate",
+		"database_pass": "changeme",
+		"database_name": "teslamate",
+		"database_host": "localhost",
+		"mqtt_host": "localhost",
+		"mqtt_user": "",
+		"mqtt_password": "",
+		"encryption_key": "",
+		"timezone": "UTC",
+		"TZ": "UTC",
+		"grafana_admin_user": "admin",
+		"grafana_admin_password": "admin"
+	},
+	"schema": {
+		"database_user": "str",
+		"database_pass": "password",
+		"database_name": "str",
+		"database_host": "str",
+		"mqtt_host": "str",
+		"mqtt_user": "str?",
+		"mqtt_password": "password?",
+		"encryption_key": "password",
+		"timezone": "str",
+		"TZ": "str",
+		"grafana_admin_user": "str",
+		"grafana_admin_password": "password"
+	}
+}
