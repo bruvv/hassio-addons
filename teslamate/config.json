@@ -1,58 +1,40 @@
 {
 	"arch": ["aarch64", "amd64", "armv7"],
-	"codenotary": "bruvv",
-	"description": "🚗📊 A powerful data logger and visualizer for your Tesla",
+	"codenotary": "alexandrep.github@gmail.com",
+	"description": "🚗📊 A powerful data logger and visualizer for your Teslar",
 	"environment": {
 		"PGID": "102",
+		"PORT": "20211",
 		"PUID": "102",
-		"TZ": "{{options.TZ}}",
-		"ENCRYPTION_KEY": "{{options.encryption_key}}",
-		"DATABASE_USER": "{{options.database_user}}",
-		"DATABASE_PASS": "{{options.database_pass}}",
-		"DATABASE_NAME": "{{options.database_name}}",
-		"DATABASE_HOST": "{{options.database_host}}",
-		"MQTT_HOST": "{{options.mqtt_host}}",
-		"MQTT_USERNAME": "{{options.mqtt_user}}",
-		"MQTT_PASSWORD": "{{options.mqtt_password}}"
+		"TZ": "Europe/Berlin"
 	},
 	"full_access": true,
 	"hassio_api": true,
-	"host_network": false,
-	"image": "ghcr.io/teslamate-org/teslamate-{arch}",
+	"host_network": true,
+	"image": "ghcr.io/alexbelgium/teslamate-{arch}",
 	"ingress": true,
-	"ingress_port": 4000,
+	"ingress_port": 0,
 	"ingress_stream": true,
 	"init": false,
 	"map": ["addon_config:rw", "media:rw", "share:rw", "ssl"],
 	"name": "TeslaMate",
 	"panel_icon": "mdi:car-connected",
 	"ports": {
-		"4000/tcp": 4000,
-		"3000/tcp": 3000,
-		"5432/tcp": 5432,
-		"1883/tcp": 1883
+		"20211/tcp": 20211,
+		"20212/tcp": 20212
 	},
 	"ports_description": {
-		"4000/tcp": "TeslaMate web interface",
-		"3000/tcp": "Grafana dashboard",
-		"5432/tcp": "PostgreSQL database",
-		"1883/tcp": "Mosquitto MQTT broker"
+		"20211/tcp": "WebUI port",
+		"20212/tcp": "GraphQL port"
 	},
-	"privileged": ["SYS_ADMIN"],
+	"privileged": ["SYS_ADMIN", "DAC_READ_SEARCH", "NET_ADMIN", "NET_RAW"],
 	"schema": {
-		"TZ": "str?",
-		"database_user": "str",
-		"database_pass": "password",
-		"database_name": "str",
-		"database_host": "str",
-		"mqtt_host": "str",
-		"mqtt_user": "str?",
-		"mqtt_password": "password?",
-		"encryption_key": "password"
+		"APP_CONF_OVERRIDE": "str?",
+		"TZ": "str?"
 	},
-	"services": ["mqtt:need", "postgres:need"],
+	"services": ["mqtt:want"],
 	"slug": "teslamate",
 	"udev": true,
-	"url": "https://github.com/bruvv/hassio-addons",
+	"url": "https://github.com/alexbelgium/hassio-addons",
 	"version": "1.0.0"
 }
