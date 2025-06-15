@@ -90,7 +90,7 @@ jobs:
   # 4. Build images for changed addons/arches
   build:
     if: ${{ needs.detect-changed-addons.outputs.changedAddons != '' && needs.detect-changed-addons.outputs.changedAddons != '[]' }}
-    needs: [detect-changed-addons, lint_config]
+    needs: [detect-changed-addons]
     runs-on: ubuntu-latest
     environment: CR_PAT
     name: Build ${{ matrix.arch }} ${{ matrix.addon }} add-on
