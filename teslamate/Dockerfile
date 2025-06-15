@@ -10,8 +10,7 @@ FROM ${BUILD_FROM}
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Get versions from build args
-ARG BUILD_VERSION
-ARG TESLAMATE_VERSION="${BUILD_VERSION:-2.0.0}"
+ARG TESLAMATE_VERSION
 
 # Use official images for each component
 FROM teslamate/teslamate:v${TESLAMATE_VERSION} as teslamate
