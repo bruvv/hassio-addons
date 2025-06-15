@@ -1,10 +1,13 @@
 {
 	"build_from": {
-		"amd64": "ghcr.io/teslamate-org/teslamate:latest",
-		"aarch64": "ghcr.io/teslamate-org/teslamate:latest",
-		"armv7": "ghcr.io/teslamate-org/teslamate:latest"
+		"amd64": "ghcr.io/home-assistant/amd64-base-debian:bullseye",
+		"aarch64": "ghcr.io/home-assistant/aarch64-base-debian:bullseye",
+		"armv7": "ghcr.io/home-assistant/armv7-base-debian:bullseye"
 	},
 	"args": {
-		"TESLAMATE_VERSION": "1.27.1"
+		"TESLAMATE_VERSION": "2.0.0"
+	},
+	"codenotary": {
+		"signer": "alexandrep.github@gmail.com"
 	}
 }

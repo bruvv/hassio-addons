@@ -9,55 +9,36 @@ FROM ${BUILD_FROM}
 # Set shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-# Install system dependencies
-RUN \
-    apt-get update && \
-    DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends \
-        postgresql-13 \
-        postgresql-client-13 \
-        wget \
-        curl \
-        gnupg2 \
-        apt-transport-https \
-        software-properties-common \
-        ca-certificates \
-        python3 \
-        python3-pip \
-        jq \
-        tzdata \
-    && wget -q -O - https://packages.grafana.com/gpg.key | apt-key add - \
-    && echo "deb https://packages.grafana.com/oss/deb stable main" > /etc/apt/sources.list.d/grafana.list \
-    && apt-get update \
-    && DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends \
-        grafana \
-        mosquitto \
-        mosquitto-clients \
-    && mkdir -p /data/postgres /data/grafana /data/mosquitto \
-    && chown -R grafana:grafana /data/grafana \
-    && chown -R mosquitto:mosquitto /data/mosquitto \
-    && chown -R postgres:postgres /data/postgres \
-    && rm -rf /var/lib/apt/lists/*
+# Get versions from build args
+ARG BUILD_VERSION
+ARG TESLAMATE_VERSION="${BUILD_VERSION:-2.0.0}"
 
-# Install TeslaMate
-ARG TESLAMATE_VERSION=1.28.4
-RUN \
-    wget https://github.com/teslamate-org/teslamate/releases/download/v${TESLAMATE_VERSION}/teslamate-linux-x64-${TESLAMATE_VERSION}.tar.gz \
-    && tar xf teslamate-linux-x64-${TESLAMATE_VERSION}.tar.gz \
-    && mv teslamate /opt/teslamate \
-    && rm teslamate-linux-x64-${TESLAMATE_VERSION}.tar.gz
+# Use official images for each component
+FROM teslamate/teslamate:v${TESLAMATE_VERSION} as teslamate
+FROM grafana/grafana:latest as grafana
+FROM eclipse-mosquitto:2 as mosquitto
+FROM postgres:13-alpine as postgres
 
-# Create required users
-RUN \
-    addgroup --system teslamate \
-    && adduser --system --home /var/lib/teslamate --disabled-login --ingroup teslamate teslamate
+# Build final image
+FROM ${BUILD_FROM}
 
-# Create required directories
+# Copy files from each component
+COPY --from=teslamate /opt/teslamate /opt/teslamate
+COPY --from=grafana /usr/share/grafana /usr/share/grafana
+COPY --from=mosquitto /usr/sbin/mosquitto /usr/sbin/mosquitto
+COPY --from=postgres /usr/local/bin/postgres /usr/local/bin/postgres
+
+# Create data directories
 RUN \
     mkdir -p /data/postgres /data/grafana /data/mosquitto \
+    && mkdir -p /var/lib/teslamate \
+    && addgroup --system teslamate \
+    && adduser --system --home /var/lib/teslamate --disabled-login --ingroup teslamate teslamate \
     && chown -R teslamate:teslamate /opt/teslamate \
-    && chown -R postgres:postgres /data/postgres \
-    && chown -R grafana:grafana /data/grafana \
-    && chown -R mosquitto:mosquitto /data/mosquitto
+    && chown -R teslamate:teslamate /var/lib/teslamate \
+    && chown -R teslamate:teslamate /data/postgres \
+    && chown -R teslamate:teslamate /data/grafana \
+    && chown -R teslamate:teslamate /data/mosquitto
 
 # Set up volumes for persistence
 VOLUME ["/data/postgres", "/data/grafana", "/data/mosquitto"]
@@ -79,7 +60,14 @@ ENV \
     DATABASE_NAME=teslamate \
     DATABASE_HOST=localhost \
     MQTT_HOST=localhost \
-    MQTT_PORT=1883
+    MQTT_PORT=1883 \
+    PATH="/usr/share/grafana/bin:${PATH}" \
+    GF_PATHS_CONFIG="/etc/grafana/grafana.ini" \
+    GF_PATHS_DATA="/data/grafana" \
+    GF_PATHS_HOME="/usr/share/grafana" \
+    GF_PATHS_LOGS="/var/log/grafana" \
+    GF_PATHS_PLUGINS="/var/lib/grafana/plugins" \
+    GF_PATHS_PROVISIONING="/etc/grafana/provisioning"
 
 # Expose all required ports
 # 4000: TeslaMate Web UI
