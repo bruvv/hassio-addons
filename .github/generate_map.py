@@ -2,7 +2,7 @@
 """
 Generate a static PNG world map colour-coded by the percentage of your
 stargazers that come from each country.  The script maintains a CSV
-".github/stargazer_countries.csv" cache so that locations are only looked
+in ".github/stargazer_countries.csv" cache so that locations are only looked
 up once (unless the country entry is blank).
 """
 
@@ -104,12 +104,12 @@ def build_choropleth(percent_by_iso):
     )
     fig.update_layout(
         coloraxis_colorbar=dict(
-        title="% stargazers",
-            len=0.5,
-            thickness=15,
-            x=0.95,
-            y=0.5,
-        ),
+            title="% stargazers",
+            len=0.5,
+            thickness=15,
+            x=0.95,
+            y=0.5,
+        ),
         margin=dict(l=0, r=0, t=0, b=0),
     )
     PNG_PATH.parent.mkdir(parents=True, exist_ok=True)

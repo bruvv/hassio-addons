@@ -15,50 +15,31 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Fix non-breaking spaces in changed text files
+      - name: Set diff range
+        id: diff
         run: |
-          echo "Finding changed files..."
-          CHANGED_FILES=$(git diff --name-only origin/master...HEAD)
-      
-          echo "Filtering text files..."
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "DIFF_RANGE=${{ github.event.pull_request.base.sha }}...${{ github.sha }}" >> $GITHUB_ENV
+          else
+            echo "DIFF_RANGE=${{ github.event.before }}...${{ github.sha }}" >> $GITHUB_ENV
+          fi
 
-          # Define fake Unicode blanks to normalize
-          declare -a UNICODE_SPACES=(
-              $'\xC2\xA0'       # U+00A0 NBSP
-              $'\xE2\x80\x82'   # U+2002 EN SPACE
-              $'\xE2\x80\x83'   # U+2003 EM SPACE
-              $'\xE2\x80\x87'   # U+2007 FIGURE SPACE
-              $'\xE2\x80\x88'   # U+2008 PUNCTUATION SPACE
-              $'\xE2\x80\x89'   # U+2009 THIN SPACE
-              $'\xE2\x80\xAF'   # U+202F NARROW NBSP
-              $'\xE2\x81\x9F'   # U+205F MEDIUM MATH SPACE
-              $'\xE3\x80\x80'   # U+3000 IDEOGRAPHIC SPACE
-              $'\xE2\x80\x8B'   # U+200B ZERO-WIDTH SPACE
-          )
-
+      - name: Fix non-printable Unicode spaces in changed text files
+        run: |
+          echo "Finding changed files in $DIFF_RANGE..."
+          CHANGED_FILES=$(git diff --name-only $DIFF_RANGE)
+          UNICODE_SPACES_REGEX=$'[\u00A0\u2002\u2003\u2007\u2008\u2009\u202F\u205F\u3000\u200B]'
           for file in $CHANGED_FILES; do
             if [ -f "$file" ]; then
               MIME_TYPE=$(file --mime-type -b "$file")
               if [[ "$MIME_TYPE" == text/* ]]; then
                 echo "Fixing: $file"
-                for blank in "${UNICODE_SPACES[@]}"; do
-                  sed -i "s/$blank/ /g" "$file"
-                done
+                perl -CSD -pe "s/$UNICODE_SPACES_REGEX/ /g" "$file" > "$file.tmp" && mv "$file.tmp" "$file"
               else
                 echo "Skipping non-text file: $file ($MIME_TYPE)"
               fi
             fi
           done
-      
-          if [[ -n "$(git status --porcelain)" ]]; then
-            git config user.name "github-actions"
-            git config user.email "github-actions@github.com"
-            git add .
-            git commit -m "fix: replace non-breaking spaces in changed text files"
-            git push
-          else
-            echo "No changes to commit."
-          fi
 
       - name: Run Super Linter
         uses: super-linter/super-linter/slim@main
@@ -76,16 +57,21 @@ jobs:
           FIX_SHELL_SHFMT: true
           FIX_YAML_PRETTIER: true
           FIX_JSON: true
-          #FIX_JSON_PRETTIER: true
+          FIX_JSON_PRETTIER: true
           FIX_MARKDOWN: true
-          #FIX_MARKDOWN_PRETTIER: true
+          FIX_MARKDOWN_PRETTIER: true
           FIX_PYTHON_BLACK: true
           FIX_PYTHON_ISORT: true
           FIX_PYTHON_RUFF: true
 
-      - name: Commit and push linting fixes
-        uses: stefanzweifel/git-auto-commit-action@v5
+      - name: Remove Super-Linter output (prevent checkout conflict)
+        run: sudo rm -rf super-linter-output/
+
+      - name: Commit if needed
+        uses: EndBug/add-and-commit@v9
         with:
-          commit_message: "chore: fix linting issues"
-          commit_user_name: super-linter
-          commit_user_email: super-linter@super-linter.dev
+          commit: -u
+          message: "GitHub bot: fix linting issues (nobuild)"
+          default_author: github_actions
+          pull: --rebase --autostash
+          fetch: --tags --force
