@@ -1,2 +1,16 @@
-#!/usr/bin/with-contenv bash
-exec /usr/lib/postgresql/$(psql --version | awk '{print $3}' | cut -d. -f1,2)/bin/postgres -D /var/lib/postgresql/data
+#!/usr/bin/with-contenv bashio
+# ==============================================================================
+# Start PostgreSQL service
+# ==============================================================================
+
+bashio::log.info "Starting PostgreSQL..."
+
+# Wait for data directory to be initialized
+while [ ! -f /data/postgres/PG_VERSION ]; do
+    bashio::log.info "Waiting for PostgreSQL data directory to be initialized..."
+    sleep 1
+done
+
+exec s6-setuidgid postgres /usr/lib/postgresql/13/bin/postgres \
+    -D /data/postgres \
+    -c config_file=/etc/postgresql/13/main/postgresql.conf

@@ -1,2 +1,22 @@
-#!/usr/bin/with-contenv bash
-exec /bin/teslamate
+#!/usr/bin/with-contenv bashio
+# ==============================================================================
+# Start TeslaMate service
+# ==============================================================================
+
+bashio::log.info "Starting TeslaMate..."
+
+# Wait for PostgreSQL to be ready
+while ! pg_isready -h localhost -U teslamate; do
+    bashio::log.info "Waiting for PostgreSQL to be ready..."
+    sleep 2
+done
+
+export DATABASE_URL="postgresql://teslamate:teslamate@localhost/teslamate"
+export MQTT_HOST=$(bashio::services "mqtt" "host")
+export MQTT_PORT=$(bashio::services "mqtt" "port")
+export MQTT_USERNAME=$(bashio::services "mqtt" "username")
+export MQTT_PASSWORD=$(bashio::services "mqtt" "password")
+export TZ=$(bashio::config 'TZ')
+
+cd /opt/teslamate
+exec ./bin/teslamate start
