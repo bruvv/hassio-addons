@@ -1,13 +1,10 @@
 {
-  "build_from": {
-    "amd64": "ghcr.io/teslamate-org/teslamate:latest",
-    "arm64": "ghcr.io/teslamate-org/teslamate:latest",
-    "armv7": "ghcr.io/teslamate-org/teslamate:latest"
-  },
-  "args": {
-    "TESLAMATE_VERSION": "2.0.0"
-  },
-  "codenotary": {
-    "signer": "alexandrep.github@gmail.com"
-  }
+	"build_from": {
+		"amd64": "ghcr.io/teslamate-org/teslamate:latest",
+		"arm64": "ghcr.io/teslamate-org/teslamate:latest",
+		"armv7": "ghcr.io/teslamate-org/teslamate:latest"
+	},
+	"codenotary": {
+		"signer": "alexandrep.github@gmail.com"
+	}
 }

@@ -4,13 +4,11 @@
 #=== Home Assistant Addon ===#
 
 ARG BUILD_FROM
-FROM ${BUILD_FROM}
+ARG BUILD_VERSION
+ARG TESLAMATE_VERSION=${BUILD_VERSION}
 
 # Set shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-
-# Get versions from build args
-ARG TESLAMATE_VERSION
 
 # Use official images for each component
 FROM teslamate/teslamate:v${TESLAMATE_VERSION} as teslamate
