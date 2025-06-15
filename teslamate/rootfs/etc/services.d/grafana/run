@@ -1,0 +1,2 @@
+#!/usr/bin/with-contenv bash
+exec /usr/sbin/grafana-server --homepath=/usr/share/grafana
