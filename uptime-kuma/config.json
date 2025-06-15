@@ -1,0 +1,29 @@
+{
+	"arch": ["arm64", "amd64", "armv7"],
+	"codenotary": "alexandrep.github@gmail.com",
+	"description": "A modern uptime monitoring solution with sleek interface and API",
+	"image": "ghcr.io/alexbelgium/uptime-kuma-{arch}",
+	"ingress": true,
+	"ingress_entry": "/",
+	"ingress_port": 3001,
+	"connection_mode": "ingress_noauth",
+	"init": false,
+	"map": ["config:rw", "ssl"],
+	"name": "Uptime Kuma",
+	"options": {
+		"ssl": false,
+		"local_storage": true
+	},
+	"panel_admin": false,
+	"panel_icon": "mdi:chart-timeline",
+	"ports": {
+		"3001/tcp": "Web interface (Not required with ingress)"
+	},
+	"ports_description": {
+		"3001/tcp": "Web interface (Not required with ingress)"
+	},
+	"slug": "uptime-kuma",
+	"udev": false,
+	"url": "https://github.com/alexbelgium/hassio-addons/tree/master/uptime-kuma",
+	"version": "1.23.8"
+}
