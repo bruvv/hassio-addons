@@ -18,30 +18,30 @@ TeslaMate is a powerful data logger and visualization tool for your Tesla vehicl
 
 These options can be configured in the add-on configuration panel in Home Assistant:
 
-| Option | Type | Required | Description |
-|--------|------|----------|-------------|
-| `TZ` | string | no | The timezone for TeslaMate. Defaults to your Home Assistant timezone. Example: "Europe/Berlin" |
-| `APP_CONF_OVERRIDE` | string | no | Additional TeslaMate configuration overrides |
+| Option              | Type   | Required | Description                                                                                    |
+| ------------------- | ------ | -------- | ---------------------------------------------------------------------------------------------- |
+| `TZ`                | string | no       | The timezone for TeslaMate. Defaults to your Home Assistant timezone. Example: "Europe/Berlin" |
+| `APP_CONF_OVERRIDE` | string | no       | Additional TeslaMate configuration overrides                                                   |
 
 ### Environment Variables
 
 The add-on comes with several pre-configured environment variables:
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `PORT` | The port where TeslaMate web interface runs | 20211 |
-| `PGID` | Process Group ID | 102 |
-| `PUID` | Process User ID | 102 |
-| `TZ` | Timezone setting | From add-on config |
+| Variable | Description                                 | Default            |
+| -------- | ------------------------------------------- | ------------------ |
+| `PORT`   | The port where TeslaMate web interface runs | 20211              |
+| `PGID`   | Process Group ID                            | 102                |
+| `PUID`   | Process User ID                             | 102                |
+| `TZ`     | Timezone setting                            | From add-on config |
 
 ## Network Ports
 
 The add-on exposes the following ports:
 
-| Port | Description |
-|------|-------------|
+| Port  | Description           |
+| ----- | --------------------- |
 | 20211 | TeslaMate Web UI port |
-| 20212 | GraphQL API port |
+| 20212 | GraphQL API port      |
 
 ## Features
 
@@ -55,11 +55,13 @@ The add-on exposes the following ports:
 ## Usage
 
 1. **First-Time Setup**:
+
    - After starting the add-on, open the Web UI
    - Log in with your Tesla account credentials
    - Your vehicle(s) should appear in the dashboard
 
 2. **Accessing Grafana** (if using bundled Grafana):
+
    - Navigate to the Grafana port or interface
    - Default credentials will be configured automatically
    - Browse the pre-configured Tesla dashboards
@@ -80,10 +82,12 @@ These directories are automatically included in Home Assistant backups when the 
 ## Troubleshooting
 
 1. **Database Connection Issues**:
+
    - Ensure the add-on has been stopped and restarted after initial configuration
    - Check the add-on logs for any PostgreSQL connection errors
 
 2. **Tesla API Connection**:
+
    - Verify your Tesla account credentials
    - Check for any API rate limiting messages in the logs
    - Ensure your network connection is stable
@@ -102,6 +106,7 @@ These directories are automatically included in Home Assistant backups when the 
 ## Security
 
 This add-on requires the following privileges:
+
 - Full Access: Required for complete vehicle data logging
 - Host Network: Required for proper MQTT and web interface functionality
 - Privileged: Required system permissions for full functionality
@@ -109,6 +114,7 @@ This add-on requires the following privileges:
 ## Contributing
 
 If you'd like to contribute to the add-on, please:
+
 1. Fork the repository
 2. Create a feature branch
 3. Submit a Pull Request

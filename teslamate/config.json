@@ -1,40 +1,40 @@
 {
-	"arch": ["aarch64", "amd64", "armv7"],
-	"codenotary": "alexandrep.github@gmail.com",
-	"description": "🚗📊 A powerful data logger and visualizer for your Tesla",
-	"environment": {
-		"PGID": "102",
-		"PORT": "20211",
-		"PUID": "102",
-		"TZ": "Europe/Berlin"
-	},
-	"full_access": true,
-	"hassio_api": true,
-	"host_network": true,
-	"image": "ghcr.io/bruvv/teslamate-{arch}",
-	"ingress": true,
-	"ingress_port": 0,
-	"ingress_stream": true,
-	"init": false,
-	"map": ["addon_config:rw", "media:rw", "share:rw", "ssl"],
-	"name": "TeslaMate",
-	"panel_icon": "mdi:car-connected",
-	"ports": {
-		"20211/tcp": 20211,
-		"20212/tcp": 20212
-	},
-	"ports_description": {
-		"20211/tcp": "WebUI port",
-		"20212/tcp": "GraphQL port"
-	},
-	"privileged": ["SYS_ADMIN", "DAC_READ_SEARCH", "NET_ADMIN", "NET_RAW"],
-	"schema": {
-		"APP_CONF_OVERRIDE": "str?",
-		"TZ": "str?"
-	},
-	"services": ["mqtt:want"],
-	"slug": "teslamate",
-	"udev": true,
-	"url": "https://github.com/alexbelgium/hassio-addons",
-	"version": "2.0.0"
+  "arch": ["aarch64", "amd64", "armv7"],
+  "codenotary": "alexandrep.github@gmail.com",
+  "description": "🚗📊 A powerful data logger and visualizer for your Tesla",
+  "environment": {
+    "PGID": "102",
+    "PORT": "20211",
+    "PUID": "102",
+    "TZ": "Europe/Berlin"
+  },
+  "full_access": true,
+  "hassio_api": true,
+  "host_network": true,
+  "image": "ghcr.io/bruvv/teslamate-{arch}",
+  "ingress": true,
+  "ingress_port": 0,
+  "ingress_stream": true,
+  "init": false,
+  "map": ["addon_config:rw", "media:rw", "share:rw", "ssl"],
+  "name": "TeslaMate",
+  "panel_icon": "mdi:car-connected",
+  "ports": {
+    "20211/tcp": 20211,
+    "20212/tcp": 20212
+  },
+  "ports_description": {
+    "20211/tcp": "WebUI port",
+    "20212/tcp": "GraphQL port"
+  },
+  "privileged": ["SYS_ADMIN", "DAC_READ_SEARCH", "NET_ADMIN", "NET_RAW"],
+  "schema": {
+    "APP_CONF_OVERRIDE": "str?",
+    "TZ": "str?"
+  },
+  "services": ["mqtt:want"],
+  "slug": "teslamate",
+  "udev": true,
+  "url": "https://github.com/alexbelgium/hassio-addons",
+  "version": "2.0.0"
 }

@@ -1,5 +1,7 @@
 ## &#9888; Open Request : [✨ [REQUEST] Addon ResilioSync - License Management (opened 2025-02-16)](https://github.com/alexbelgium/hassio-addons/issues/1773) by [@rsstrene](https://github.com/rsstrene)
+
 ## &#9888; Open Issue : [🐛 [resiliosync] Resilio Sync does not have permission to access this folder: /backup (opened 2025-06-12)](https://github.com/alexbelgium/hassio-addons/issues/1909) by [@FrankBakermans](https://github.com/FrankBakermans)
+
 # Home assistant add-on: Resilio Sync
 
 [![Donate][donation-badge]](https://www.buymeacoffee.com/alexbelgium)
