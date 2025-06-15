@@ -3,21 +3,22 @@
 #============================#
 #=== Home Assistant Addon ===#
 
+# Build arguments
 ARG BUILD_FROM
 ARG BUILD_VERSION
 ARG TESLAMATE_VERSION=${BUILD_VERSION}
+
+# Build final image
+FROM ${BUILD_FROM}
 
 # Set shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Use official images for each component
-FROM teslamate/teslamate:v${TESLAMATE_VERSION} as teslamate
-FROM grafana/grafana:latest as grafana
-FROM eclipse-mosquitto:2 as mosquitto
-FROM postgres:13-alpine as postgres
-
-# Build final image
-FROM ${BUILD_FROM}
+FROM teslamate/teslamate:v${TESLAMATE_VERSION} AS teslamate
+FROM grafana/grafana:latest AS grafana
+FROM eclipse-mosquitto:2 AS mosquitto
+FROM postgres:13-alpine AS postgres
 
 # Copy files from each component
 COPY --from=teslamate /opt/teslamate /opt/teslamate
