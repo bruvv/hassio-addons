@@ -16,7 +16,7 @@ ARG TESLAMATE_VERSION=${BUILD_VERSION}
 FROM postgres:13-alpine AS postgres
 FROM grafana/grafana:latest AS grafana
 FROM eclipse-mosquitto:2 AS mosquitto
-FROM ghcr.io/teslamate-org/teslamate:v${TESLAMATE_VERSION} AS teslamate
+FROM teslamate/teslamate:v${TESLAMATE_VERSION} AS teslamate
 
 ##################
 # 2 Final Image  #
