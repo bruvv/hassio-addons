@@ -1,0 +1,2 @@
+#!/usr/bin/with-contenv bash
+exec /usr/sbin/mosquitto -c /etc/mosquitto/mosquitto.conf

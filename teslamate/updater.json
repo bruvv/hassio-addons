@@ -1,0 +1,8 @@
+{
+	"last_update": "25-01-2025",
+	"repository": "alexbelgium/hassio-addons",
+	"slug": "teslamate",
+	"source": "github",
+	"upstream_repo": "teslamate-org/teslamate",
+	"upstream_version": "1.27.1"
+}
