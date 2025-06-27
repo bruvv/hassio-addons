@@ -1,0 +1,10 @@
+{
+	"build_from": {
+		"amd64": "ghcr.io/teslamate-org/teslamate:latest",
+		"aarch64": "ghcr.io/teslamate-org/teslamate:latest",
+		"armv7": "ghcr.io/teslamate-org/teslamate:latest"
+	},
+	"args": {
+		"TESLAMATE_VERSION": "1.27.1"
+	}
+}
